@@ -50,3 +50,20 @@ export interface EnvironmentConfig {
   mode: string
   isTest: boolean
 }
+
+export interface CacheOptions {
+  ttlMs?: number
+  maxSize?: number
+}
+
+export interface CacheEntry<T> {
+  data: T
+  createdAt: number
+  ttlMs: number
+}
+
+export interface CacheStats {
+  size: number
+  maxSize: number
+  utilizationPercent: number
+}

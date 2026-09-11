@@ -57,7 +57,7 @@ Functionality such as caching, retry handling, debouncing, validation, environme
 
 ### Prerequisites
 
-A recent Node.js version and npm are required.
+A recent Node.js version(Using v22.18.0) and npm are required.
 
 The project was developed using a modern Node.js environment.
 
