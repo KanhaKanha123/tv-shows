@@ -1,0 +1,228 @@
+.genre-page {
+  min-height: 100%;
+  padding: 2rem 0 3rem;
+}
+
+.page-container {
+  width: min(100%, 1440px);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.genre-page-header {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2rem;
+}
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-end;
+  gap: 0.5rem;
+
+  margin-bottom: 1.5rem;
+  padding: 0.5rem 0;
+
+  color: #94a3b8;
+  font: inherit;
+  font-weight: 600;
+
+  background: transparent;
+  border: 0;
+
+  cursor: pointer;
+
+  transition: color 0.2s ease;
+}
+
+.back-button:hover {
+  color: #f59e0b;
+}
+
+.back-button:focus-visible {
+  outline: 2px solid #f59e0b;
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+.genre-page-header h1 {
+  margin: 0;
+
+  color: #f8fafc;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.genre-page-header p {
+  margin: 0.75rem 0 0;
+
+  color: #94a3b8;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.status-message {
+  margin: 2rem 0;
+
+  color: #94a3b8;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/*
+ * Show grid
+ *
+ * Keep card widths controlled on desktop
+ * so they stay visually consistent with HomeView.
+ */
+.shows-grid {
+  display: grid;
+
+  grid-template-columns: repeat(auto-fill, minmax(180px, 220px));
+
+  justify-content: start;
+
+  gap: 1.5rem;
+}
+
+/*
+ * Load more section
+ */
+.load-more-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+
+  margin-top: 3rem;
+}
+
+.load-more-button {
+  min-width: 160px;
+  min-height: 42px;
+
+  padding: 0.65rem 1.25rem;
+
+  color: #f8fafc;
+  font: inherit;
+  font-weight: 600;
+
+  background: transparent;
+  border: 1px solid #f59e0b;
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    opacity 0.2s ease,
+    transform 0.15s ease;
+}
+
+.load-more-button:hover:not(:disabled) {
+  color: #0b0f19;
+  background: #f59e0b;
+}
+
+.load-more-button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.load-more-button:focus-visible {
+  outline: 3px solid rgb(245 158 11 / 30%);
+  outline-offset: 3px;
+}
+
+.load-more-button:disabled {
+  cursor: wait;
+  opacity: 0.5;
+}
+
+.load-more-error {
+  margin: 0;
+
+  color: #fca5a5;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.loaded-shows-count {
+  margin: 0;
+
+  color: #94a3b8;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+/*
+ * Tablet
+ */
+@media (max-width: 768px) {
+  .genre-page {
+    padding-top: 1.5rem;
+  }
+
+  .page-container {
+    padding: 0 1rem;
+  }
+
+  .genre-page-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .shows-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 200px));
+
+    gap: 1rem;
+  }
+
+  .load-more-section {
+    margin-top: 2.5rem;
+  }
+}
+
+/*
+ * Mobile
+ */
+@media (max-width: 560px) {
+  .page-container {
+    padding: 0 0.75rem;
+  }
+
+  .genre-page-header h1 {
+    font-size: 2rem;
+  }
+
+  .back-button {
+    margin-bottom: 1rem;
+  }
+
+  .shows-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 0.75rem;
+  }
+
+  .load-more-section {
+    margin-top: 2rem;
+  }
+
+  .load-more-button {
+    width: 100%;
+    max-width: 280px;
+  }
+}
+
+/*
+ * Accessibility
+ */
+@media (prefers-reduced-motion: reduce) {
+  .back-button,
+  .load-more-button {
+    transition: none;
+  }
+}

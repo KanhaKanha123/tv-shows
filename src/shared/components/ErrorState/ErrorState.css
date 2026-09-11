@@ -1,0 +1,51 @@
+.error-state {
+  width: 100%;
+  max-width: 600px;
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: rgb(239 68 68 / 8%);
+  border: 1px solid rgb(239 68 68 / 25%);
+  border-radius: 10px;
+}
+
+.error-state h2 {
+  margin: 0 0 0.5rem;
+  color: #f8fafc;
+  font-size: 1.25rem;
+}
+
+.error-state p {
+  margin: 0 0 1.25rem;
+  color: #fca5a5;
+  line-height: 1.6;
+}
+
+.retry-button {
+  cursor: pointer;
+  padding: 0.65rem 1rem;
+  color: #0b0f19;
+  font: inherit;
+  font-weight: 700;
+  background: #f59e0b;
+  border: 0;
+  border-radius: 8px;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.retry-button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.retry-button:focus-visible {
+  outline: 2px solid #f59e0b;
+  outline-offset: 3px;
+}
+
+@media (max-width: 560px) {
+  .error-state {
+    padding: 1.25rem;
+  }
+}

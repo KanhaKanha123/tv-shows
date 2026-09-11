@@ -1,0 +1,119 @@
+.show-card {
+  flex: 0 0 220px;
+  overflow: hidden;
+  background: #111827;
+  border: 1px solid rgb(255 255 255 / 7%);
+  border-radius: 14px;
+  scroll-snap-align: start;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease;
+}
+
+.show-card:hover {
+  transform: translateY(-5px);
+  border-color: rgb(245 158 11 / 45%);
+}
+
+.show-card-link {
+  display: block;
+  height: 100%;
+  color: inherit;
+  text-decoration: none;
+}
+
+.show-card-link:focus-visible {
+  outline: 3px solid #f59e0b;
+  outline-offset: -3px;
+}
+
+.show-card-poster {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 2 / 3;
+  background: #1e293b;
+}
+
+.show-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 250ms ease;
+}
+
+.show-card:hover .show-card-image {
+  transform: scale(1.04);
+}
+
+.show-card-image-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: #64748b;
+  font-size: 0.85rem;
+}
+
+.show-card-rating {
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.35rem 0.55rem;
+  color: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  background: rgb(0 0 0 / 75%);
+  border-radius: 6px;
+  backdrop-filter: blur(4px);
+}
+
+.show-card-rating span {
+  color: #f59e0b;
+}
+
+.show-card-content {
+  padding: 1rem;
+}
+
+.show-card-content h3 {
+  overflow: hidden;
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #f8fafc;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.show-card-content p {
+  overflow: hidden;
+  margin: 0.35rem 0 0;
+  color: #7f8ca3;
+  font-size: 0.78rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .show-card {
+    flex-basis: 170px;
+  }
+}
+
+@media (max-width: 560px) {
+  .show-card {
+    flex-basis: 150px;
+  }
+
+  .show-card-content {
+    padding: 0.8rem;
+  }
+
+  .show-card-content h3 {
+    font-size: 0.9rem;
+  }
+}

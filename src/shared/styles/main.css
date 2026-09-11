@@ -1,0 +1,124 @@
+html,
+body,
+#app {
+  margin: 0;
+  min-height: 100vh;
+}
+
+body {
+  min-width: 320px;
+  background: #0b0f19;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.app-loading {
+  min-height: 100vh;
+
+  padding: 2rem 1.5rem;
+
+  background: #0b0f19;
+}
+
+.app-loading-container {
+  width: min(100%, 1440px);
+
+  margin: 0 auto;
+}
+
+.app-loading-title {
+  width: 280px;
+  height: 42px;
+
+  margin-bottom: 1rem;
+
+  border-radius: 8px;
+
+  background: #1e293b;
+}
+
+.app-loading-text {
+  width: 360px;
+  max-width: 80%;
+  height: 20px;
+
+  margin-bottom: 3rem;
+
+  border-radius: 6px;
+
+  background: #1e293b;
+}
+
+.app-loading-grid {
+  display: grid;
+
+  grid-template-columns: repeat(auto-fill, minmax(170px, 220px));
+
+  gap: 1rem;
+}
+
+.app-loading-card {
+  overflow: hidden;
+
+  border-radius: 10px;
+
+  background: #111827;
+}
+
+.app-loading-image {
+  aspect-ratio: 2 / 3;
+
+  background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+
+  background-size: 200% 100%;
+
+  animation: loading-shimmer 1.5s infinite;
+}
+
+.app-loading-content {
+  padding: 1rem;
+}
+
+.app-loading-line {
+  height: 16px;
+
+  margin-bottom: 0.75rem;
+
+  border-radius: 4px;
+
+  background: #1e293b;
+}
+
+.app-loading-line-short {
+  width: 65%;
+}
+
+@keyframes loading-shimmer {
+  from {
+    background-position: 200% 0;
+  }
+
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (max-width: 560px) {
+  .app-loading {
+    padding: 1.5rem 0.75rem;
+  }
+
+  .app-loading-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-loading-image {
+    animation: none;
+  }
+}
