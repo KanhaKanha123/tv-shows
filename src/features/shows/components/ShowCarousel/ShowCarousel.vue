@@ -7,9 +7,11 @@ const props = withDefaults(
     title: string;
     shows: Show[];
     showViewAll?: boolean;
+    priorityImageCount?: number;
   }>(),
   {
     showViewAll: true,
+    priorityImageCount: 0,
   },
 );
 
@@ -48,7 +50,12 @@ const sectionTitleId = `genre-${props.title
 
     <div class="show-carousel-scroll" :aria-label="`${title} shows`">
       <div class="show-carousel-list">
-        <ShowCard v-for="show in shows" :key="show.id" :show="show" />
+        <ShowCard
+          v-for="(show, index) in shows"
+          :key="show.id"
+          :show="show"
+          :is-priority="index === 0 && priorityImageCount > 0"
+        />
       </div>
     </div>
   </section>

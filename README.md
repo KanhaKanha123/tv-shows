@@ -192,6 +192,7 @@ src/
 └── shared/
     ├── components/
     │   ├── AppHeader/
+    |   ├── PageHeader/
     │   ├── ErrorState/
     │   └── SearchBar/
     │
@@ -491,7 +492,7 @@ TVMaze search is fuzzy and can return shows whose names do not directly contain 
 To provide more predictable UI behaviour, the returned results are additionally filtered client-side using a case-insensitive title match:
 
 ```ts
-show.name.toLowerCase().includes(normalizedSearch)
+show.name.toLowerCase().includes(normalizedSearch);
 ```
 
 Search results are then grouped using the same genre transformation logic as the Home dashboard.

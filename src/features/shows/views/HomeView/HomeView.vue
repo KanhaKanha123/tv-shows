@@ -75,10 +75,11 @@ watch(
 
       <template v-else>
         <ShowCarousel
-          v-for="genre in genreGroups"
+          v-for="(genre, genreIndex) in genreGroups"
           :key="genre.name"
           :title="genre.name"
           :shows="genre.shows"
+          :priority-image-count="genreIndex === 0 ? 1 : 0"
         />
       </template>
     </div>

@@ -3,9 +3,15 @@ import { RouterLink } from 'vue-router';
 
 import type { Show } from '../../types';
 
-defineProps<{
-  show: Show;
-}>();
+withDefaults(
+  defineProps<{
+    show: Show;
+    isPriority?: boolean;
+  }>(),
+  {
+    isPriority: false,
+  },
+);
 </script>
 
 <template>
@@ -26,7 +32,8 @@ defineProps<{
           :src="show.image.medium"
           :alt="`${show.name} poster`"
           class="show-card-image"
-          loading="lazy"
+          :loading="isPriority ? 'eager' : 'lazy'"
+          :fetchpriority="isPriority ? 'high' : 'auto'"
           decoding="async"
         />
 
