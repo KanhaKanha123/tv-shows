@@ -1,2 +1,2 @@
-export { groupShowsByGenre } from './groupShowsByGenre/groupShowsByGenre'
-export { sortShowsByRating } from './sortShowsByRating/sortShowsByRating'
+export { groupShowsByGenre } from './groupShowsByGenre/groupShowsByGenre';
+export { sortShowsByRating } from './sortShowsByRating/sortShowsByRating';

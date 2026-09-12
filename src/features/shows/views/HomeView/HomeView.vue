@@ -1,56 +1,55 @@
 <script setup lang="ts">
-import { computed, watch } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useRoute } from 'vue-router'
+import { computed, watch } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useRoute } from 'vue-router';
 
-import { ErrorState } from '../../../../shared/components'
-import { ShowCarousel, ShowSkeleton } from '../../components'
-import { useShowsStore } from '../../stores'
+import { ErrorState, PageHeader } from '../../../../shared/components';
+import { ShowCarousel, ShowSkeleton } from '../../components';
+import { useShowsStore } from '../../stores';
 
-const route = useRoute()
-const showsStore = useShowsStore()
+const route = useRoute();
+const showsStore = useShowsStore();
 
 const { genreGroups, searchGenreGroups, isLoadingShows, isSearching, showsError, searchError } =
-  storeToRefs(showsStore)
+  storeToRefs(showsStore);
 
-const { loadShows, search } = showsStore
+const { loadShows, search } = showsStore;
 
-const searchQuery = computed(() => (typeof route.query.q === 'string' ? route.query.q.trim() : ''))
+const searchQuery = computed(() => (typeof route.query.q === 'string' ? route.query.q.trim() : ''));
 
-const isSearchMode = computed(() => searchQuery.value.length > 0)
+const isSearchMode = computed(() => searchQuery.value.length > 0);
 
-const isLoading = computed(() => (isSearchMode.value ? isSearching.value : isLoadingShows.value))
+const isLoading = computed(() => (isSearchMode.value ? isSearching.value : isLoadingShows.value));
 
-const activeError = computed(() => (isSearchMode.value ? searchError.value : showsError.value))
+const activeError = computed(() => (isSearchMode.value ? searchError.value : showsError.value));
 
 async function loadShowsFromRoute(): Promise<void> {
   if (isSearchMode.value) {
-    await search(searchQuery.value)
-    return
+    await search(searchQuery.value);
+    return;
   }
 
-  await loadShows()
+  await loadShows();
 }
 
 watch(
   searchQuery,
   () => {
-    void loadShowsFromRoute()
+    void loadShowsFromRoute();
   },
   {
     immediate: true,
   },
-)
+);
 </script>
 
 <template>
   <main id="main-content" class="shows-page" :aria-busy="isLoading">
     <div class="page-container">
-      <section class="dashboard-intro" aria-labelledby="dashboard-title">
-        <h1 id="dashboard-title">Discover TV Shows</h1>
-
-        <p>Browse top-rated shows across your favourite genres.</p>
-      </section>
+      <PageHeader
+        title="Discover TV Shows"
+        description="Browse top-rated shows across your favourite genres."
+      />
 
       <div v-if="isLoading" class="loading-state">
         <p class="status-message" role="status" aria-live="polite">Loading shows...</p>

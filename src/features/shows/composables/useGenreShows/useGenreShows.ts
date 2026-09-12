@@ -1,150 +1,143 @@
-import { computed, ref, watch, type Ref } from 'vue'
+import { computed, ref, watch, type Ref } from 'vue';
 
-import { getShows } from '../../api/showsApi/shows.api'
-import { ApiError } from '../../api/apiError/error-types'
-import type { Show } from '../../types'
+import { getShows, ApiError } from '../../api';
+import type { Show } from '../../types';
 
 export function useGenreShows(genre: Ref<string>) {
-  const shows = ref<Show[]>([])
+  const shows = ref<Show[]>([]);
 
-  const currentApiPage = ref(-1)
+  const currentApiPage = ref(-1);
 
-  const isLoading = ref(false)
-  const isLoadingMore = ref(false)
+  const isLoading = ref(false);
+  const isLoadingMore = ref(false);
 
-  const hasMoreShows = ref(true)
+  const hasMoreShows = ref(true);
 
-  const error = ref<string | null>(null)
+  const error = ref<string | null>(null);
 
   const genreName = computed(() => {
-    const value = genre.value.trim()
+    const value = genre.value.trim();
 
     if (!value) {
-      return ''
+      return '';
     }
 
-    return value.charAt(0).toUpperCase() + value.slice(1)
-  })
+    return value.charAt(0).toUpperCase() + value.slice(1);
+  });
 
-  const normalizedGenre = computed(() => genre.value.trim().toLowerCase())
+  const normalizedGenre = computed(() => genre.value.trim().toLowerCase());
 
   function matchesGenre(show: Show): boolean {
-    return show.genres.some((item) => item.toLowerCase() === normalizedGenre.value)
+    return show.genres.some((item) => item.toLowerCase() === normalizedGenre.value);
   }
 
   function appendUniqueShows(newShows: Show[]): void {
-    const existingIds = new Set(shows.value.map((show) => show.id))
+    const existingIds = new Set(shows.value.map((show) => show.id));
 
-    const uniqueShows = newShows.filter((show) => !existingIds.has(show.id))
+    const uniqueShows = newShows.filter((show) => !existingIds.has(show.id));
 
-    shows.value.push(...uniqueShows)
+    shows.value.push(...uniqueShows);
   }
 
   function getErrorMessage(caughtError: unknown): string {
-    return caughtError instanceof Error ? caughtError.message : 'Failed to load shows'
+    return caughtError instanceof Error ? caughtError.message : 'Failed to load shows';
   }
 
   function isEndOfCatalogue(caughtError: unknown): boolean {
-    return caughtError instanceof ApiError && caughtError.status === 404
+    return caughtError instanceof ApiError && caughtError.status === 404;
   }
 
   async function loadPage(page: number): Promise<Show[]> {
-    const pageShows = await getShows(page)
+    const pageShows = await getShows(page);
 
-    return pageShows.filter(matchesGenre)
+    return pageShows.filter(matchesGenre);
   }
 
   async function loadNextAvailableShows(): Promise<void> {
     if (isLoadingMore.value || !hasMoreShows.value) {
-      return
+      return;
     }
 
-    isLoadingMore.value = true
-    error.value = null
+    isLoadingMore.value = true;
+    error.value = null;
 
     try {
-      let foundShows = false
+      let foundShows = false;
 
       while (!foundShows && hasMoreShows.value) {
-        const nextPage = currentApiPage.value + 1
+        const nextPage = currentApiPage.value + 1;
 
         try {
-          const matchingShows = await loadPage(nextPage)
+          const matchingShows = await loadPage(nextPage);
 
-          currentApiPage.value = nextPage
+          currentApiPage.value = nextPage;
 
           if (matchingShows.length > 0) {
-            appendUniqueShows(matchingShows)
+            appendUniqueShows(matchingShows);
 
-            foundShows = true
+            foundShows = true;
           }
         } catch (caughtError) {
           if (isEndOfCatalogue(caughtError)) {
-            hasMoreShows.value = false
+            hasMoreShows.value = false;
 
-            break
+            break;
           }
 
-          throw caughtError
+          throw caughtError;
         }
       }
     } catch (caughtError) {
-      error.value = getErrorMessage(caughtError)
+      error.value = getErrorMessage(caughtError);
     } finally {
-      isLoadingMore.value = false
+      isLoadingMore.value = false;
     }
   }
 
   async function loadInitialShows(): Promise<void> {
-    isLoading.value = true
+    isLoading.value = true;
 
     try {
-      await loadNextAvailableShows()
+      await loadNextAvailableShows();
     } finally {
-      isLoading.value = false
+      isLoading.value = false;
     }
   }
 
   function reset(): void {
-    shows.value = []
+    shows.value = [];
 
-    currentApiPage.value = -1
+    currentApiPage.value = -1;
 
-    hasMoreShows.value = true
+    hasMoreShows.value = true;
 
-    error.value = null
+    error.value = null;
   }
 
   async function reload(): Promise<void> {
-    reset()
+    reset();
 
-    await loadInitialShows()
+    await loadInitialShows();
   }
 
   watch(
     genre,
     () => {
-      void reload()
+      void reload();
     },
     {
       immediate: true,
     },
-  )
+  );
 
   return {
     shows,
-
     genreName,
-
     isLoading,
     isLoadingMore,
-
     hasMoreShows,
-
     error,
-
     loadMoreShows: loadNextAvailableShows,
-
     reload,
-  }
+  };
 }

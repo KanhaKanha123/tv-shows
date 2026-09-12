@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { Show } from '../../types/show-type'
+import type { Show } from '../../types';
 
 defineProps<{
-  show: Show
-}>()
+  show: Show;
+}>();
 </script>
 
 <template>

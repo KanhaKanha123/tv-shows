@@ -1,17 +1,13 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed } from 'vue';
+import type { ShowSkeletonProps } from '../../types';
 
-interface Props {
-  count?: number
-  variant?: 'card' | 'inline'
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<ShowSkeletonProps>(), {
   count: 6,
   variant: 'card',
-})
+});
 
-const skeletons = computed(() => Array.from({ length: props.count }, (_, index) => index))
+const skeletons = computed(() => Array.from({ length: props.count }, (_, index) => index));
 </script>
 
 <template>

@@ -1,71 +1,71 @@
 <script setup lang="ts">
-import { onBeforeUnmount, ref, watch } from 'vue'
+import { onBeforeUnmount, ref, watch } from 'vue';
 
-import { debounce, validateSearchInput } from '../../../shared/utils'
+import { debounce, validateSearchInput } from '../../../shared/utils';
 
 const props = withDefaults(
   defineProps<{
-    initialValue?: string
+    initialValue?: string;
   }>(),
   {
     initialValue: '',
   },
-)
+);
 
 const emit = defineEmits<{
-  search: [query: string]
-}>()
+  search: [query: string];
+}>();
 
-const searchInput = ref(props.initialValue)
-const searchError = ref<string | null>(null)
+const searchInput = ref(props.initialValue);
+const searchError = ref<string | null>(null);
 
 watch(
   () => props.initialValue,
   (newValue) => {
-    searchInput.value = newValue
+    searchInput.value = newValue;
   },
-)
+);
 
 function emitSearch(query: string): void {
-  const validation = validateSearchInput(query)
+  const validation = validateSearchInput(query);
 
   if (!validation.isValid) {
     if (!query.trim()) {
-      searchError.value = null
-      emit('search', '')
-      return
+      searchError.value = null;
+      emit('search', '');
+      return;
     }
 
-    searchError.value = validation.error ?? 'Invalid search value'
+    searchError.value = validation.error ?? 'Invalid search value';
 
-    return
+    return;
   }
 
-  searchError.value = null
+  searchError.value = null;
 
-  emit('search', validation.sanitized)
+  emit('search', validation.sanitized);
 }
 
-const debouncedSearch = debounce(emitSearch, 300)
+const debouncedSearch = debounce(emitSearch, 300);
 
 function handleInput(event: Event): void {
-  const input = event.target as HTMLInputElement
+  const input = event.target as HTMLInputElement;
 
-  debouncedSearch(input.value)
+  debouncedSearch(input.value);
 }
 
 function clearSearch(): void {
-  debouncedSearch.cancel()
+  debouncedSearch.cancel();
 
-  searchInput.value = ''
-  searchError.value = null
+  searchInput.value = '';
+  searchError.value = null;
 
-  emit('search', '')
+  emit('search', '');
 }
 
 onBeforeUnmount(() => {
-  debouncedSearch.cancel()
-})
+  debouncedSearch.cancel();
+});
 </script>
 
 <template>

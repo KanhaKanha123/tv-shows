@@ -2,47 +2,47 @@
  * Request logging and monitoring middleware
  */
 
-import { LogLevel, type LoggerConfig, type RequestLog } from '../types'
+import { LogLevel, type LoggerConfig, type RequestLog } from '../types';
 
 const DEFAULT_CONFIG: Required<LoggerConfig> = {
   maxLogs: 1000,
   enableConsole: true,
   enableRemote: false,
   remoteUrl: '',
-}
+};
 
 /**
  * Request logger singleton
  */
 class RequestLogger {
-  private logs: RequestLog[] = []
-  private config: Required<LoggerConfig>
+  private logs: RequestLog[] = [];
+  private config: Required<LoggerConfig>;
 
   constructor(config: LoggerConfig = {}) {
-    this.config = { ...DEFAULT_CONFIG, ...config }
+    this.config = { ...DEFAULT_CONFIG, ...config };
   }
 
   /**
    * Log a request
    */
   log(log: RequestLog): void {
-    this.logs.push(log)
+    this.logs.push(log);
 
     // Keep logs under max size
     if (this.logs.length > this.config.maxLogs) {
-      this.logs = this.logs.slice(-this.config.maxLogs)
+      this.logs = this.logs.slice(-this.config.maxLogs);
     }
 
     // Console logging
     if (this.config.enableConsole) {
-      this.logToConsole(log)
+      this.logToConsole(log);
     }
 
     // Remote logging
     if (this.config.enableRemote && this.config.remoteUrl) {
       this.sendToRemote(log).catch((err) => {
-        console.error('[Logger] Failed to send remote log:', err)
-      })
+        console.error('[Logger] Failed to send remote log:', err);
+      });
     }
   }
 
@@ -51,9 +51,9 @@ class RequestLogger {
    */
   logRequestStart(endpoint: string, method: string): number {
     if (this.config.enableConsole) {
-      console.log(`[${method}] ${endpoint}`)
+      console.log(`[${method}] ${endpoint}`);
     }
-    return Date.now()
+    return Date.now();
   }
 
   /**
@@ -68,16 +68,16 @@ class RequestLogger {
       status,
       duration,
       message: `${method} ${endpoint} completed with status ${status}`,
-    }
+    };
 
-    this.log(log)
+    this.log(log);
   }
 
   /**
    * Log HTTP request error
    */
   logRequestError(endpoint: string, method: string, error: unknown, duration: number): void {
-    const errorMessage = error instanceof Error ? error.message : String(error)
+    const errorMessage = error instanceof Error ? error.message : String(error);
 
     const log: RequestLog = {
       timestamp: Date.now(),
@@ -87,74 +87,74 @@ class RequestLogger {
       duration,
       error: errorMessage,
       message: `${method} ${endpoint} failed: ${errorMessage}`,
-    }
+    };
 
-    this.log(log)
+    this.log(log);
   }
 
   /**
    * Get all logs
    */
   getLogs(): RequestLog[] {
-    return [...this.logs]
+    return [...this.logs];
   }
 
   /**
    * Get logs by level
    */
   getLogsByLevel(level: LogLevel): RequestLog[] {
-    return this.logs.filter((log) => log.level === level)
+    return this.logs.filter((log) => log.level === level);
   }
 
   /**
    * Get recent logs
    */
   getRecentLogs(count: number): RequestLog[] {
-    return this.logs.slice(-count)
+    return this.logs.slice(-count);
   }
 
   /**
    * Clear all logs
    */
   clear(): void {
-    this.logs = []
+    this.logs = [];
   }
 
   /**
    * Get log statistics
    */
   getStats() {
-    const total = this.logs.length
-    const errors = this.logs.filter((log) => log.level === LogLevel.ERROR).length
+    const total = this.logs.length;
+    const errors = this.logs.filter((log) => log.level === LogLevel.ERROR).length;
     const avgDuration =
-      total > 0 ? this.logs.reduce((sum, log) => sum + log.duration, 0) / total : 0
+      total > 0 ? this.logs.reduce((sum, log) => sum + log.duration, 0) / total : 0;
 
     return {
       total,
       errors,
       errorRate: total > 0 ? (errors / total) * 100 : 0,
       avgDurationMs: Math.round(avgDuration),
-    }
+    };
   }
 
   /**
    * Export logs as JSON
    */
   exportJSON(): string {
-    return JSON.stringify(this.logs, null, 2)
+    return JSON.stringify(this.logs, null, 2);
   }
 
   /**
    * Log to console with formatting
    */
   private logToConsole(log: RequestLog): void {
-    const emoji = this.getEmoji(log.level)
-    const statusColor = log.status ? this.getStatusColor(log.status) : ''
+    const emoji = this.getEmoji(log.level);
+    const statusColor = log.status ? this.getStatusColor(log.status) : '';
 
-    console.log(`${emoji} [${log.level}] ${log.message} ${statusColor}(${log.duration}ms)`)
+    console.log(`${emoji} [${log.level}] ${log.message} ${statusColor}(${log.duration}ms)`);
 
     if (log.error) {
-      console.error(`  Error: ${log.error}`)
+      console.error(`  Error: ${log.error}`);
     }
   }
 
@@ -162,7 +162,7 @@ class RequestLogger {
    * Send log to remote server
    */
   private async sendToRemote(log: RequestLog): Promise<void> {
-    if (!this.config.remoteUrl) return
+    if (!this.config.remoteUrl) return;
 
     try {
       await fetch(this.config.remoteUrl, {
@@ -171,10 +171,10 @@ class RequestLogger {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(log),
-      })
+      });
     } catch (error) {
       // Silently fail to avoid disrupting application
-      console.warn('[Logger] Remote logging failed:', error)
+      console.warn('[Logger] Remote logging failed:', error);
     }
   }
 
@@ -184,15 +184,15 @@ class RequestLogger {
   private getEmoji(level: LogLevel): string {
     switch (level) {
       case LogLevel.DEBUG:
-        return '🔍'
+        return '🔍';
       case LogLevel.INFO:
-        return 'ℹ️'
+        return 'ℹ️';
       case LogLevel.WARN:
-        return '⚠️'
+        return '⚠️';
       case LogLevel.ERROR:
-        return '❌'
+        return '❌';
       default:
-        return '📝'
+        return '📝';
     }
   }
 
@@ -201,34 +201,34 @@ class RequestLogger {
    */
   private getStatusColor(status: number): string {
     if (status >= 200 && status < 300) {
-      return '✅'
+      return '✅';
     }
     if (status >= 400 && status < 500) {
-      return '⚠️'
+      return '⚠️';
     }
     if (status >= 500) {
-      return '❌'
+      return '❌';
     }
-    return ''
+    return '';
   }
 }
 
 // Singleton instance
-let loggerInstance: RequestLogger | null = null
+let loggerInstance: RequestLogger | null = null;
 
 /**
  * Get or create logger instance
  */
 export function getLogger(config?: LoggerConfig): RequestLogger {
   if (!loggerInstance) {
-    loggerInstance = new RequestLogger(config)
+    loggerInstance = new RequestLogger(config);
   }
-  return loggerInstance
+  return loggerInstance;
 }
 
 /**
  * Reset logger (mainly for testing)
  */
 export function resetLogger(): void {
-  loggerInstance = null
+  loggerInstance = null;
 }

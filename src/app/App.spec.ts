@@ -1,7 +1,7 @@
-import { mount } from '@vue/test-utils'
-import { describe, expect, it } from 'vitest'
+import { mount } from '@vue/test-utils';
+import { describe, expect, it } from 'vitest';
 
-import App from './App.vue'
+import App from './App.vue';
 
 describe('App', () => {
   it('renders the router view', () => {
@@ -17,10 +17,10 @@ describe('App', () => {
           },
         },
       },
-    })
+    });
 
-    expect(wrapper.find('[data-testid="router-view"]').exists()).toBe(true)
+    expect(wrapper.find('[data-testid="router-view"]').exists()).toBe(true);
 
-    expect(wrapper.text()).toContain('Route content')
-  })
-})
+    expect(wrapper.text()).toContain('Route content');
+  });
+});

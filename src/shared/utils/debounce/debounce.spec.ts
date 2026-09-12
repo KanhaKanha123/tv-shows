@@ -1,54 +1,53 @@
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { debounce } from './debounce'
+import { debounce } from './debounce';
 
 describe('debounce', () => {
   afterEach(() => {
-    vi.useRealTimers()
-  })
+    vi.useRealTimers();
+  });
 
   it('calls the callback after the delay', () => {
-    vi.useFakeTimers()
+    vi.useFakeTimers();
 
-    const callback = vi.fn()
-    const debounced = debounce(callback, 300)
+    const callback = vi.fn();
+    const debounced = debounce(callback, 300);
 
-    debounced('test')
+    debounced('test');
 
-    expect(callback).not.toHaveBeenCalled()
+    expect(callback).not.toHaveBeenCalled();
 
-    vi.advanceTimersByTime(300)
+    vi.advanceTimersByTime(300);
 
-    expect(callback).toHaveBeenCalledWith('test')
-  })
+    expect(callback).toHaveBeenCalledWith('test');
+  });
 
   it('only calls the callback once for multiple calls within the delay', () => {
-    vi.useFakeTimers()
+    vi.useFakeTimers();
 
-    const callback = vi.fn()
-    const debounced = debounce(callback, 300)
+    const callback = vi.fn();
+    const debounced = debounce(callback, 300);
 
-    debounced('a')
-    debounced('ab')
-    debounced('abc')
+    debounced('a');
+    debounced('ab');
+    debounced('abc');
 
-    vi.advanceTimersByTime(300)
+    vi.advanceTimersByTime(300);
 
-    expect(callback).toHaveBeenCalledOnce()
-    expect(callback).toHaveBeenCalledWith('abc')
-  })
+    expect(callback).toHaveBeenCalledExactlyOnceWith('abc');
+  });
 
   it('does not call the callback after cancel', () => {
-    vi.useFakeTimers()
+    vi.useFakeTimers();
 
-    const callback = vi.fn()
-    const debounced = debounce(callback, 300)
+    const callback = vi.fn();
+    const debounced = debounce(callback, 300);
 
-    debounced('test')
-    debounced.cancel()
+    debounced('test');
+    debounced.cancel();
 
-    vi.advanceTimersByTime(300)
+    vi.advanceTimersByTime(300);
 
-    expect(callback).not.toHaveBeenCalled()
-  })
-})
+    expect(callback).not.toHaveBeenCalled();
+  });
+});

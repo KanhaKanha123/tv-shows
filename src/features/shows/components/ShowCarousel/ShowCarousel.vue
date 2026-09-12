@@ -1,22 +1,22 @@
 <script setup lang="ts">
-import type { Show } from '../../types'
-import ShowCard from '../ShowCard/ShowCard.vue'
+import type { Show } from '../../types';
+import ShowCard from '../ShowCard/ShowCard.vue';
 
 const props = withDefaults(
   defineProps<{
-    title: string
-    shows: Show[]
-    showViewAll?: boolean
+    title: string;
+    shows: Show[];
+    showViewAll?: boolean;
   }>(),
   {
     showViewAll: true,
   },
-)
+);
 
 const sectionTitleId = `genre-${props.title
   .toLowerCase()
   .replace(/\s+/g, '-')
-  .replace(/[^a-z0-9-]/g, '')}`
+  .replace(/[^a-z0-9-]/g, '')}`;
 </script>
 
 <template>

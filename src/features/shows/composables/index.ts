@@ -1,1 +1,1 @@
-export * from './useGenreShows/useGenreShows'
+export * from './useGenreShows/useGenreShows';

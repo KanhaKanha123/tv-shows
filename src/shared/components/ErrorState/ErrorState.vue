@@ -1,11 +1,11 @@
 <script setup lang="ts">
 defineProps<{
-  message: string
-}>()
+  message: string;
+}>();
 
 const emit = defineEmits<{
-  retry: []
-}>()
+  retry: [];
+}>();
 </script>
 
 <template>

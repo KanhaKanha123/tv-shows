@@ -1,1 +1,1 @@
-export type * from './show-type'
+export type * from './show-type';

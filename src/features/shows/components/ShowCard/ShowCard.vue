@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { RouterLink } from 'vue-router'
+import { RouterLink } from 'vue-router';
 
-import type { Show } from '../../types'
+import type { Show } from '../../types';
 
 defineProps<{
-  show: Show
-}>()
+  show: Show;
+}>();
 </script>
 
 <template>

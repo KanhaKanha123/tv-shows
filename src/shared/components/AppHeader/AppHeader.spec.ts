@@ -1,12 +1,12 @@
-import { mount } from '@vue/test-utils'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { mount } from '@vue/test-utils';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import AppHeader from './AppHeader.vue'
+import AppHeader from './AppHeader.vue';
 
-const replaceMock = vi.fn()
-const cancelMock = vi.fn()
+const replaceMock = vi.fn();
+const cancelMock = vi.fn();
 
-let routeQuery: Record<string, unknown> = {}
+let routeQuery: Record<string, unknown> = {};
 
 vi.mock('vue-router', () => ({
   useRoute: () => ({
@@ -30,23 +30,23 @@ vi.mock('vue-router', () => ({
       </a>
     `,
   },
-}))
+}));
 
 vi.mock('../../utils', () => ({
   debounce: (callback: (query: string) => void) => {
     const debounced = (query: string) => {
-      callback(query)
-    }
+      callback(query);
+    };
 
-    debounced.cancel = cancelMock
+    debounced.cancel = cancelMock;
 
-    return debounced
+    return debounced;
   },
-}))
+}));
 
 function createWrapper(
   props: {
-    showSearch?: boolean
+    showSearch?: boolean;
   } = {},
 ) {
   return mount(AppHeader, {
@@ -79,101 +79,101 @@ function createWrapper(
         },
       },
     },
-  })
+  });
 }
 
 describe('AppHeader', () => {
   beforeEach(() => {
-    routeQuery = {}
-    replaceMock.mockClear()
-    cancelMock.mockClear()
-  })
+    routeQuery = {};
+    replaceMock.mockClear();
+    cancelMock.mockClear();
+  });
 
   it('renders the brand link', () => {
-    const wrapper = createWrapper()
+    const wrapper = createWrapper();
 
-    const brand = wrapper.get('.brand')
+    const brand = wrapper.get('.brand');
 
-    expect(brand.text()).toBe('TVSHOWS')
+    expect(brand.text()).toBe('TVSHOWS');
 
-    expect(brand.attributes('aria-label')).toBe('TV Shows home')
-  })
+    expect(brand.attributes('aria-label')).toBe('TV Shows home');
+  });
 
   it('links the brand to the home page', () => {
-    const wrapper = createWrapper()
+    const wrapper = createWrapper();
 
-    expect(wrapper.get('.router-link-stub').attributes('data-to')).toBe(JSON.stringify('/'))
-  })
+    expect(wrapper.get('.router-link-stub').attributes('data-to')).toBe(JSON.stringify('/'));
+  });
 
   it('renders the skip link', () => {
-    const wrapper = createWrapper()
+    const wrapper = createWrapper();
 
-    const skipLink = wrapper.get('.skip-link')
+    const skipLink = wrapper.get('.skip-link');
 
-    expect(skipLink.text()).toBe('Skip to main content')
+    expect(skipLink.text()).toBe('Skip to main content');
 
-    expect(skipLink.attributes('href')).toBe('#main-content')
-  })
+    expect(skipLink.attributes('href')).toBe('#main-content');
+  });
 
   it('shows the search bar by default', () => {
-    const wrapper = createWrapper()
+    const wrapper = createWrapper();
 
-    expect(wrapper.find('.search-bar-stub').exists()).toBe(true)
-  })
+    expect(wrapper.find('.search-bar-stub').exists()).toBe(true);
+  });
 
   it('hides the search bar when showSearch is false', () => {
     const wrapper = createWrapper({
       showSearch: false,
-    })
+    });
 
-    expect(wrapper.find('.search-bar-stub').exists()).toBe(false)
-  })
+    expect(wrapper.find('.search-bar-stub').exists()).toBe(false);
+  });
 
   it('passes the route query to the search bar', () => {
     routeQuery = {
       q: 'Breaking Bad',
-    }
+    };
 
-    const wrapper = createWrapper()
+    const wrapper = createWrapper();
 
-    expect(wrapper.get('.search-bar-stub').attributes('data-initial-value')).toBe('Breaking Bad')
-  })
+    expect(wrapper.get('.search-bar-stub').attributes('data-initial-value')).toBe('Breaking Bad');
+  });
 
   it('passes an empty string when the route has no search query', () => {
-    const wrapper = createWrapper()
+    const wrapper = createWrapper();
 
-    expect(wrapper.get('.search-bar-stub').attributes('data-initial-value')).toBe('')
-  })
+    expect(wrapper.get('.search-bar-stub').attributes('data-initial-value')).toBe('');
+  });
 
   it('trims the search query before updating the route', async () => {
-    const wrapper = createWrapper()
+    const wrapper = createWrapper();
 
-    await wrapper.get('.emit-search').trigger('click')
+    await wrapper.get('.emit-search').trigger('click');
 
     expect(replaceMock).toHaveBeenCalledWith({
       name: 'home',
       query: {
         q: 'The Wire',
       },
-    })
-  })
+    });
+  });
 
   it('clears the query when the search value is empty', async () => {
-    const wrapper = createWrapper()
+    const wrapper = createWrapper();
 
-    await wrapper.get('.emit-empty-search').trigger('click')
+    await wrapper.get('.emit-empty-search').trigger('click');
 
     expect(replaceMock).toHaveBeenCalledWith({
       name: 'home',
       query: {},
-    })
-  })
+    });
+  });
 
   it('cancels the debounced search when unmounted', () => {
-    const wrapper = createWrapper()
+    const wrapper = createWrapper();
 
-    wrapper.unmount()
+    wrapper.unmount();
 
-    expect(cancelMock).toHaveBeenCalledOnce()
-  })
-})
+    expect(cancelMock).toHaveBeenCalledOnce();
+  });
+});

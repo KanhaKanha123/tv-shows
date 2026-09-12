@@ -1,1 +1,1 @@
-export { useShowsStore } from './shows.store'
+export { useShowsStore } from './shows.store';

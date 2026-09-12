@@ -1,34 +1,34 @@
 <script setup lang="ts">
-import { onBeforeUnmount } from 'vue'
-import { RouterLink, useRoute, useRouter } from 'vue-router'
+import { onBeforeUnmount } from 'vue';
+import { RouterLink, useRoute, useRouter } from 'vue-router';
 
-import SearchBar from '../SearchBar/SearchBar.vue'
-import { debounce } from '../../utils'
+import SearchBar from '../SearchBar/SearchBar.vue';
+import { debounce } from '../../utils';
 
 withDefaults(
   defineProps<{
-    showSearch?: boolean
+    showSearch?: boolean;
   }>(),
   {
     showSearch: true,
   },
-)
+);
 
-const route = useRoute()
-const router = useRouter()
+const route = useRoute();
+const router = useRouter();
 
 const handleSearch = debounce((query: string) => {
-  const normalizedQuery = query.trim()
+  const normalizedQuery = query.trim();
 
   void router.replace({
     name: 'home',
     query: normalizedQuery ? { q: normalizedQuery } : {},
-  })
-}, 300)
+  });
+}, 300);
 
 onBeforeUnmount(() => {
-  handleSearch.cancel()
-})
+  handleSearch.cancel();
+});
 </script>
 
 <template>

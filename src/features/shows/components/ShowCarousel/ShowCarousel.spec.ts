@@ -1,8 +1,8 @@
-import { mount } from '@vue/test-utils'
-import { describe, expect, it } from 'vitest'
+import { mount } from '@vue/test-utils';
+import { describe, expect, it } from 'vitest';
 
-import ShowCarousel from './ShowCarousel.vue'
-import type { Show } from '../../types'
+import ShowCarousel from './ShowCarousel.vue';
+import type { Show } from '../../types';
 
 const shows: Show[] = [
   {
@@ -108,12 +108,12 @@ const shows: Show[] = [
       },
     },
   },
-]
+];
 
 function createWrapper(
   props: {
-    title?: string
-    showViewAll?: boolean
+    title?: string;
+    showViewAll?: boolean;
   } = {},
 ) {
   return mount(ShowCarousel, {
@@ -148,49 +148,49 @@ function createWrapper(
         },
       },
     },
-  })
+  });
 }
 
 describe('ShowCarousel', () => {
   it('renders the section title', () => {
-    const wrapper = createWrapper()
+    const wrapper = createWrapper();
 
-    expect(wrapper.get('h2').text()).toBe('Drama')
-  })
+    expect(wrapper.get('h2').text()).toBe('Drama');
+  });
 
   it('renders the subtitle using the lowercase title', () => {
     const wrapper = createWrapper({
       title: 'Science Fiction',
-    })
+    });
 
-    expect(wrapper.get('.show-carousel-header p').text()).toBe('Top rated science fiction shows')
-  })
+    expect(wrapper.get('.show-carousel-header p').text()).toBe('Top rated science fiction shows');
+  });
 
   it('renders one show card for every show', () => {
-    const wrapper = createWrapper()
+    const wrapper = createWrapper();
 
-    const cards = wrapper.findAll('.show-card-stub')
+    const cards = wrapper.findAll('.show-card-stub');
 
-    expect(cards).toHaveLength(2)
+    expect(cards).toHaveLength(2);
 
-    expect(cards[0]?.text()).toContain('Breaking Bad')
-    expect(cards[1]?.text()).toContain('The Wire')
-  })
+    expect(cards[0]?.text()).toContain('Breaking Bad');
+    expect(cards[1]?.text()).toContain('The Wire');
+  });
 
   it('renders the view all link by default', () => {
-    const wrapper = createWrapper()
+    const wrapper = createWrapper();
 
-    const link = wrapper.get('.show-carousel-action')
+    const link = wrapper.get('.show-carousel-action');
 
-    expect(link.text()).toContain('View all')
-  })
+    expect(link.text()).toContain('View all');
+  });
 
   it('creates the correct genre route for view all', () => {
     const wrapper = createWrapper({
       title: 'Science Fiction',
-    })
+    });
 
-    const link = wrapper.get('.router-link-stub')
+    const link = wrapper.get('.router-link-stub');
 
     expect(link.attributes('data-to')).toBe(
       JSON.stringify({
@@ -199,37 +199,37 @@ describe('ShowCarousel', () => {
           genre: 'science fiction',
         },
       }),
-    )
-  })
+    );
+  });
 
   it('hides the view all link when showViewAll is false', () => {
     const wrapper = createWrapper({
       showViewAll: false,
-    })
+    });
 
-    expect(wrapper.find('.show-carousel-action').exists()).toBe(false)
-  })
+    expect(wrapper.find('.show-carousel-action').exists()).toBe(false);
+  });
 
   it('sets the correct section aria-labelledby value', () => {
     const wrapper = createWrapper({
       title: 'Science Fiction',
-    })
+    });
 
-    const section = wrapper.get('section')
-    const heading = wrapper.get('h2')
+    const section = wrapper.get('section');
+    const heading = wrapper.get('h2');
 
-    expect(section.attributes('aria-labelledby')).toBe('genre-science-fiction')
+    expect(section.attributes('aria-labelledby')).toBe('genre-science-fiction');
 
-    expect(heading.attributes('id')).toBe('genre-science-fiction')
-  })
+    expect(heading.attributes('id')).toBe('genre-science-fiction');
+  });
 
   it('sets an accessible label on the horizontal show list', () => {
     const wrapper = createWrapper({
       title: 'Drama',
-    })
+    });
 
-    expect(wrapper.get('.show-carousel-scroll').attributes('aria-label')).toBe('Drama shows')
-  })
+    expect(wrapper.get('.show-carousel-scroll').attributes('aria-label')).toBe('Drama shows');
+  });
 
   it('renders no show cards when the show list is empty', () => {
     const wrapper = mount(ShowCarousel, {
@@ -247,8 +247,8 @@ describe('ShowCarousel', () => {
           },
         },
       },
-    })
+    });
 
-    expect(wrapper.findAll('.show-card-stub')).toHaveLength(0)
-  })
-})
+    expect(wrapper.findAll('.show-card-stub')).toHaveLength(0);
+  });
+});

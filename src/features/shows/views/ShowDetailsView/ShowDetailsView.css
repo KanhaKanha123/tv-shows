@@ -2,6 +2,7 @@
   min-height: 100vh;
   background: #0b0f19;
   color: #f8fafc;
+  padding: 2rem 0 3rem;
 }
 
 .page-container {
@@ -18,19 +19,15 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-
   width: fit-content;
   margin-top: 2rem;
   margin-left: auto;
   padding: 0;
-
   color: #94a3b8;
   font: inherit;
   font-weight: 600;
-
   background: transparent;
   border: 0;
-
   cursor: pointer;
 }
 

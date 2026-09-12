@@ -7,24 +7,19 @@
   align-items: flex-end;
   justify-content: space-between;
   gap: 1rem;
-
   margin-bottom: 1.25rem;
 }
 
 .show-carousel-header h2 {
   margin: 0;
-
   color: #f8fafc;
-
   font-size: 1.5rem;
   line-height: 1.2;
 }
 
 .show-carousel-header p {
   margin: 0.5rem 0 0;
-
   color: #94a3b8;
-
   font-size: 0.9rem;
 }
 
@@ -32,11 +27,8 @@
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-
   flex-shrink: 0;
-
   color: #f59e0b;
-
   font-weight: 600;
   text-decoration: none;
 }
@@ -53,10 +45,8 @@
 
 .show-carousel-scroll {
   width: 100%;
-
   overflow-x: auto;
   overflow-y: hidden;
-
   scrollbar-width: thin;
   scroll-behavior: smooth;
 }
@@ -64,9 +54,7 @@
 .show-carousel-list {
   display: flex;
   gap: 1rem;
-
   width: max-content;
-
   padding-bottom: 1rem;
 }
 

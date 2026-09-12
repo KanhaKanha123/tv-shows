@@ -1,159 +1,159 @@
-import { computed, ref } from 'vue'
-import { defineStore } from 'pinia'
+import { computed, ref } from 'vue';
+import { defineStore } from 'pinia';
 
-import type { Show } from '../types'
-import { getShowById, getShows, searchShows } from '../api'
-import { groupShowsByGenre } from '../utils'
+import type { Show } from '../types';
+import { getShowById, getShows, searchShows } from '../api';
+import { groupShowsByGenre } from '../utils';
 
 export const useShowsStore = defineStore('shows', () => {
-  const allShows = ref<Show[]>([])
-  const searchResults = ref<Show[]>([])
-  const selectedShow = ref<Show | null>(null)
+  const allShows = ref<Show[]>([]);
+  const searchResults = ref<Show[]>([]);
+  const selectedShow = ref<Show | null>(null);
 
-  const isLoadingShows = ref(false)
-  const isSearching = ref(false)
-  const isLoadingShowDetail = ref(false)
+  const isLoadingShows = ref(false);
+  const isSearching = ref(false);
+  const isLoadingShowDetail = ref(false);
 
-  const showsError = ref<string | null>(null)
-  const searchError = ref<string | null>(null)
-  const showDetailError = ref<string | null>(null)
+  const showsError = ref<string | null>(null);
+  const searchError = ref<string | null>(null);
+  const showDetailError = ref<string | null>(null);
 
-  const genreGroups = computed(() => groupShowsByGenre(allShows.value))
+  const genreGroups = computed(() => groupShowsByGenre(allShows.value));
 
-  const searchGenreGroups = computed(() => groupShowsByGenre(searchResults.value))
+  const searchGenreGroups = computed(() => groupShowsByGenre(searchResults.value));
 
-  let hasLoadedShows = false
-  let loadShowsPromise: Promise<void> | null = null
+  let hasLoadedShows = false;
+  let loadShowsPromise: Promise<void> | null = null;
 
-  let searchRequestToken = 0
-  let detailRequestToken = 0
+  let searchRequestToken = 0;
+  let detailRequestToken = 0;
 
-  const searchCache = new Map<string, Show[]>()
-  const showDetailsCache = new Map<number, Show>()
+  const searchCache = new Map<string, Show[]>();
+  const showDetailsCache = new Map<number, Show>();
 
   function getErrorMessage(error: unknown, fallback: string): string {
-    return error instanceof Error ? error.message : fallback
+    return error instanceof Error ? error.message : fallback;
   }
 
   async function loadShows(): Promise<void> {
     if (hasLoadedShows) {
-      return
+      return;
     }
 
     if (loadShowsPromise) {
-      return loadShowsPromise
+      return loadShowsPromise;
     }
 
     loadShowsPromise = (async () => {
-      isLoadingShows.value = true
-      showsError.value = null
+      isLoadingShows.value = true;
+      showsError.value = null;
 
       try {
-        const shows = await getShows(0)
+        const shows = await getShows(0);
 
-        allShows.value = shows
-        hasLoadedShows = true
+        allShows.value = shows;
+        hasLoadedShows = true;
       } catch (error) {
-        showsError.value = getErrorMessage(error, 'Failed to load shows')
+        showsError.value = getErrorMessage(error, 'Failed to load shows');
       } finally {
-        isLoadingShows.value = false
-        loadShowsPromise = null
+        isLoadingShows.value = false;
+        loadShowsPromise = null;
       }
-    })()
+    })();
 
-    return loadShowsPromise
+    return loadShowsPromise;
   }
 
   async function search(query: string): Promise<void> {
-    const normalizedQuery = query.trim()
+    const normalizedQuery = query.trim();
 
     if (!normalizedQuery) {
-      searchResults.value = []
-      searchError.value = null
-      return
+      searchResults.value = [];
+      searchError.value = null;
+      return;
     }
 
-    const cacheKey = normalizedQuery.toLowerCase()
+    const cacheKey = normalizedQuery.toLowerCase();
 
-    const cachedResults = searchCache.get(cacheKey)
+    const cachedResults = searchCache.get(cacheKey);
 
     if (cachedResults) {
-      searchResults.value = cachedResults
-      searchError.value = null
-      return
+      searchResults.value = cachedResults;
+      searchError.value = null;
+      return;
     }
 
-    const requestToken = ++searchRequestToken
+    const requestToken = ++searchRequestToken;
 
-    isSearching.value = true
-    searchError.value = null
+    isSearching.value = true;
+    searchError.value = null;
 
     try {
-      const results = await searchShows(normalizedQuery)
+      const results = await searchShows(normalizedQuery);
 
       if (requestToken !== searchRequestToken) {
-        return
+        return;
       }
 
-      const normalizedSearch = normalizedQuery.toLowerCase()
+      const normalizedSearch = normalizedQuery.toLowerCase();
 
       const shows = results
         .map(({ show }) => show)
-        .filter((show) => show.name.toLowerCase().includes(normalizedSearch))
+        .filter((show) => show.name.toLowerCase().includes(normalizedSearch));
 
-      searchCache.set(cacheKey, shows)
+      searchCache.set(cacheKey, shows);
 
-      searchResults.value = shows
+      searchResults.value = shows;
     } catch (error) {
       if (requestToken !== searchRequestToken) {
-        return
+        return;
       }
 
-      searchError.value = getErrorMessage(error, 'Failed to search shows')
+      searchError.value = getErrorMessage(error, 'Failed to search shows');
     } finally {
       if (requestToken === searchRequestToken) {
-        isSearching.value = false
+        isSearching.value = false;
       }
     }
   }
 
   async function loadShowById(id: number): Promise<void> {
-    const cachedShow = showDetailsCache.get(id)
+    const cachedShow = showDetailsCache.get(id);
 
     if (cachedShow) {
-      selectedShow.value = cachedShow
+      selectedShow.value = cachedShow;
 
-      showDetailError.value = null
-      return
+      showDetailError.value = null;
+      return;
     }
 
-    const requestToken = ++detailRequestToken
+    const requestToken = ++detailRequestToken;
 
-    isLoadingShowDetail.value = true
-    showDetailError.value = null
-    selectedShow.value = null
+    isLoadingShowDetail.value = true;
+    showDetailError.value = null;
+    selectedShow.value = null;
 
     try {
-      const show = await getShowById(id)
+      const show = await getShowById(id);
 
       if (requestToken !== detailRequestToken) {
-        return
+        return;
       }
 
-      showDetailsCache.set(id, show)
+      showDetailsCache.set(id, show);
 
-      selectedShow.value = show
+      selectedShow.value = show;
     } catch (error) {
       if (requestToken !== detailRequestToken) {
-        return
+        return;
       }
 
-      selectedShow.value = null
+      selectedShow.value = null;
 
-      showDetailError.value = getErrorMessage(error, 'Failed to load show')
+      showDetailError.value = getErrorMessage(error, 'Failed to load show');
     } finally {
       if (requestToken === detailRequestToken) {
-        isLoadingShowDetail.value = false
+        isLoadingShowDetail.value = false;
       }
     }
   }
@@ -177,5 +177,5 @@ export const useShowsStore = defineStore('shows', () => {
     loadShows,
     search,
     loadShowById,
-  }
-})
+  };
+});

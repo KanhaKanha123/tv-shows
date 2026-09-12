@@ -1,0 +1,73 @@
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.page-header-content {
+  min-width: 0;
+}
+
+.page-header h1 {
+  margin: 0;
+  color: #f8fafc;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.page-header p {
+  margin: 0.75rem 0 0;
+  color: #94a3b8;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  color: #94a3b8;
+  font: inherit;
+  font-weight: 600;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.back-button:hover {
+  color: #f59e0b;
+}
+
+.back-button:focus-visible {
+  outline: 2px solid #f59e0b;
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+@media (max-width: 560px) {
+  .page-header {
+    flex-direction: column-reverse;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .page-header h1 {
+    font-size: 2rem;
+  }
+
+  .back-button {
+    align-self: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .back-button {
+    transition: none;
+  }
+}

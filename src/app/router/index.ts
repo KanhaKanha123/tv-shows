@@ -1,16 +1,14 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router';
 
-import AppLayout from '../../layouts/AppLayout/AppLayout.vue'
-import { GenreView, HomeView, NotFoundView, ShowDetailsView } from '../../features/shows/views'
+import AppLayout from '../../layouts/AppLayout/AppLayout.vue';
+import { GenreView, HomeView, NotFoundView, ShowDetailsView } from '../../features/shows/views';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-
   routes: [
     {
       path: '/',
       component: AppLayout,
-
       children: [
         {
           path: '',
@@ -35,6 +33,6 @@ const router = createRouter({
       ],
     },
   ],
-})
+});
 
-export default router
+export default router;
