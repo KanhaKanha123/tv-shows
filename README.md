@@ -1,15 +1,5 @@
 # TV Shows App
 
-## Application Preview
-
-### Desktop
-
-![Home dashboard - desktop](./docs/home-view-desktop.png)
-
-### Mobile
-
-![Home dashboard - mobile](./docs/home-view-mobile.png)
-
 A responsive TV show discovery application built with **Vue 3, TypeScript, Vite, Pinia, and Vue Router**, using the public **TVMaze API**.
 
 The application allows users to:
