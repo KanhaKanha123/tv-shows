@@ -23,24 +23,21 @@ function goBack(): void {
   <main id="main-content" class="genre-page" :aria-busy="isLoading || isLoadingMore">
     <div class="page-container">
       <header class="genre-page-header">
+        <div class="genre-page-heading">
+          <h1>{{ genreName }} Shows</h1>
+
+          <p>Browse {{ genreName.toLowerCase() }} shows.</p>
+        </div>
+
         <button
           type="button"
           class="back-button"
           aria-label="Go back to previous page"
           @click="goBack"
         >
-          <span aria-hidden="true"> ← </span>
-
+          <span aria-hidden="true">←</span>
           Back
         </button>
-
-        <h1>{{ genreName }} Shows</h1>
-
-        <p>
-          Browse
-          {{ genreName.toLowerCase() }}
-          shows.
-        </p>
       </header>
 
       <p v-if="isLoading" class="status-message" role="status" aria-live="polite">
@@ -70,9 +67,7 @@ function goBack(): void {
           </p>
 
           <p class="loaded-shows-count" aria-live="polite">
-            {{ shows.length }}
-            {{ genreName }}
-            shows loaded
+            {{ shows.length }} {{ genreName }} shows loaded
           </p>
         </div>
       </template>
